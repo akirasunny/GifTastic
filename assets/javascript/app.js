@@ -2,7 +2,7 @@
 
 var keyword = ["Tiger", "Lion","Leopard", "Snow Leopard", "Caracal", "Jaguar", "Cheetah", "Cougar", "Ragdoll"];
 var apikey = "api_key=46d43f5c668e4342bc6f47e2724e9585";
-var limit = 10;
+var limit = 50;
 
 // initialize buttons
 for (i = 0; i < keyword.length; i++) {
@@ -62,16 +62,15 @@ function display(event) {
 		url: queryurl,
 		method: "GET"
 	}).done(function(res) {
-		console.log(res);
-		console.log(res.data.length);
 		var data = shuffle(res.data);
-		for (i = 0; i < data.length; i++) {
+		console.log(data);
+		for (i = 0; i < 10; i++) {
 			var newdiv = $("<div class='gifdiv'>");
 			var banner = $("<div class='rating'>").css("text-align", "center").html("Rating: " + data[i].rating);
 			var newimg = $("<img class='gif' state='still'>");
 			var still = data[i].images.downsized_still.url;
 			var animate = data[i].images.downsized.url
-			newimg.attr("still", still).attr("animate", animate).attr("height", "150px").attr("src", still);
+			newimg.attr("still", still).attr("animate", animate).attr("height", "150px").attr("src", still).attr("alt", name);
 			newdiv.append(newimg, banner);
 			$("#displayer").append(newdiv);
 		}
