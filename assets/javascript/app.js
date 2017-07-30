@@ -1,6 +1,6 @@
 // globals
 
-var keyword = ["Tiger", "Lion","Leopard", "Snow Leopard", "Caracal", "Jaguar", "Cheetah", "Cougar", "Ragdoll"];
+var keyword = ["Tiger", "Lion","Leopard", "Snow Leopard", "Caracal", "Jaguar", "Cheetah", "Cougar", "Ragdoll Cat"];
 var apikey = "api_key=46d43f5c668e4342bc6f47e2724e9585";
 var limit = 50;
 
@@ -57,13 +57,14 @@ function addbutton(event) {
 function display(event) {
 	$("#displayer").empty();
 	name = $(this).html();
+	var animal = $("<h4>Now displaying: " + name + "</h4>");
+	$("#displayer").append(animal);
 	queryurl = "https://api.giphy.com/v1/gifs/search?q=" + name + "&" + apikey + "&limit=" + limit;
 	$.ajax({
 		url: queryurl,
 		method: "GET"
 	}).done(function(res) {
 		var data = shuffle(res.data);
-		console.log(data);
 		for (i = 0; i < 10; i++) {
 			var newdiv = $("<div class='gifdiv'>");
 			var banner = $("<div class='rating'>").css("text-align", "center").html("Rating: " + data[i].rating);
@@ -81,11 +82,8 @@ function display(event) {
 
 function clickgif() {
 	var state = $(this).attr("state");
-	console.log(state);
 	still = $(this).attr("still");
 	animate = $(this).attr("animate");
-	console.log(still);
-	console.log(animate);
 	if (state ==="still") {
 		$(this).attr("src", animate);
 		$(this).attr("state", "animate");
