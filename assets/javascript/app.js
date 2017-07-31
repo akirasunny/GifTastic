@@ -39,7 +39,7 @@ function capitalize(a) {
 	return final;
 }
 
-function addbutton(event) {
+function addbutton() {
 	input = $("#keyword").val().trim();
 	input = capitalize(input); // capitalize 1st letter of input
 	if (input !== "" && keyword.indexOf(input) === -1) {
@@ -54,7 +54,7 @@ function addbutton(event) {
 	}
 }
 
-function display(event) {
+function display() {
 	$("#displayer").empty();
 	name = $(this).html();
 	var animal = $("<h4>Now displaying: " + name + "</h4>");
@@ -67,34 +67,57 @@ function display(event) {
 		var data = shuffle(res.data);
 		for (i = 0; i < 10; i++) {
 			var newdiv = $("<div class='gifdiv'>");
-			var banner = $("<div class='rating'>").css("text-align", "center").html("Rating: " + data[i].rating);
+			var rating = $("<div class='rating'>").css("text-align", "center").html("Rating: " + data[i].rating);
 			var newimg = $("<img class='gif' state='still'>");
 			var still = data[i].images.downsized_still.url;
-			var animate = data[i].images.downsized.url
-			newimg.attr("still", still).attr("animate", animate).attr("height", "150px").attr("src", still).attr("alt", name);
-			newdiv.append(newimg, banner);
+			var animate = data[i].images.downsized.url;
+			var original = data[i].images.original.url;
+			rating.attr("original", original).attr("rating", data[i].rating);
+			newimg.attr("src", still).attr("alt", name).attr("height", "150px");
+			newdiv.append(newimg, rating);
 			$("#displayer").append(newdiv);
 		}
+
+		// pop-up of full-size gif
+
 		var placeholder = $("<div>").css("height", "200px").css("clear", "both");
+		var fullsize = $("<div class='fullsize'>").css("display", "none");
+		var close = $("<span id='close'>").html("<img id='cross' src='assets/images/close.png' width='50px'>");
+		var fsimg = $("<img class='fsimg'>");
+		var rating1 = $("<div class='fsrating'>");
+		fullsize.append(close, fsimg, rating1);
 		$("#displayer").append(placeholder);
+		$("body").append(fullsize);
 	})
 }
 
 function clickgif() {
-	var state = $(this).attr("state");
-	still = $(this).attr("still");
-	animate = $(this).attr("animate");
-	if (state ==="still") {
-		$(this).attr("src", animate);
-		$(this).attr("state", "animate");
-	}
-	else {
-		$(this).attr("src", still);
-		$(this).attr("state", "still");
-	}
+	// $(".fsimg").attr("src", "assets/images/loading.gif").css("border", "0");
+	$(".fullsize").css("display", "block");
+	$(".fsrating").html("Rating: " + $(this).attr("rating"));
+	var original = $(this).attr("original");
+	$(".fsimg").attr("src", original).css("border", "7px solid #fff").css("width", "auto");
+
+	// I tried another way to animate gifs (as above), comments below is the first version.
+
+	// var still = $(this).attr("still");
+	// var animate = $(this).attr("animate");
+	// if (state ==="still") {
+	// 	$(this).attr("src", animate);
+	// 	$(this).attr("state", "animate");
+	// }
+	// else {
+	// 	$(this).attr("src", still);
+	// 	$(this).attr("state", "still");
+	// }
+}
+
+function closegif() {
+	$(".fullsize").css("display", "none");
 }
 
 // main
 $("#submit").on("click", addbutton);
 $(document).on("click", ".added", display);
-$(document).on("click", ".gif", clickgif);
+$(document).on("click", ".rating", clickgif);
+$(document).on("click", "#cross", closegif);
