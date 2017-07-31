@@ -39,7 +39,7 @@ function capitalize(a) {
 	return final;
 }
 
-function addbutton() {
+function addbutton(event) {
 	input = $("#keyword").val().trim();
 	input = capitalize(input); // capitalize 1st letter of input
 	if (input !== "" && keyword.indexOf(input) === -1) {
@@ -52,6 +52,16 @@ function addbutton() {
 		}
 		$("#keyword").val("");
 	}
+}
+
+// pop-up of full-size gif
+function popout() {
+	var fullsize = $("<div class='fullsize'>").css("display", "none");
+	var close = $("<span id='close'>").html("<img id='cross' src='assets/images/close.png' width='50px'>");
+	var fsimg = $("<img class='fsimg'>");
+	var rating1 = $("<div class='fsrating'>");
+	fullsize.append(close, fsimg, rating1);
+	$("body").append(fullsize);
 }
 
 function display() {
@@ -77,17 +87,8 @@ function display() {
 			newdiv.append(newimg, rating);
 			$("#displayer").append(newdiv);
 		}
-
-		// pop-up of full-size gif
-
 		var placeholder = $("<div>").css("height", "200px").css("clear", "both");
-		var fullsize = $("<div class='fullsize'>").css("display", "none");
-		var close = $("<span id='close'>").html("<img id='cross' src='assets/images/close.png' width='50px'>");
-		var fsimg = $("<img class='fsimg'>");
-		var rating1 = $("<div class='fsrating'>");
-		fullsize.append(close, fsimg, rating1);
 		$("#displayer").append(placeholder);
-		$("body").append(fullsize);
 	})
 }
 
@@ -117,7 +118,14 @@ function closegif() {
 }
 
 // main
+popout();
 $("#submit").on("click", addbutton);
+$("#keyword").keypress(function(event) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		addbutton();
+	}
+})
 $(document).on("click", ".added", display);
 $(document).on("click", ".rating", clickgif);
 $(document).on("click", "#cross", closegif);
