@@ -60,7 +60,8 @@ function popout() {
 	var close = $("<span id='close'>").html("<img id='cross' src='assets/images/close.png' width='50px'>");
 	var fsimg = $("<img class='fsimg'>");
 	var rating1 = $("<div class='fsrating'>");
-	fullsize.append(close, fsimg, rating1);
+	var fullsizechild = $("<div class='fullsizechild'>").append(close, fsimg, rating1);
+	fullsize.append(fullsizechild);
 	$("body").append(fullsize);
 }
 
@@ -93,8 +94,7 @@ function display() {
 }
 
 function clickgif() {
-	// $(".fsimg").attr("src", "assets/images/loading.gif").css("border", "0");
-	$(".fullsize").css("display", "block");
+	$(".fullsize").css("display", "flex");
 	$(".fsrating").html("Rating: " + $(this).attr("rating"));
 	var original = $(this).attr("original");
 	$(".fsimg").attr("src", original).css("border", "7px solid #fff").css("width", "auto");
